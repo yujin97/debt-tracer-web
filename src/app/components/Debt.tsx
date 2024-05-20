@@ -6,6 +6,7 @@ interface Props {
   subject: string;
   status: "PAID" | "UNPAID";
 }
+
 export function Debt({ type, date, amount, currency, subject, status }: Props) {
   const typeLabel = type === "borrowed" ? "Borrowed" : "Lent";
   const statusLabel = status === "PAID" ? "PAID" : "UNPAID";
