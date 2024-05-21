@@ -13,14 +13,29 @@ interface DebtProps {
 async function fetchDebts(): Promise<DebtProps[]> {
   const TEMP_USER_ID = "35652167-1d42-440c-ac77-441282535f82";
 
-  const response = await fetch(
-    `http://127.0.0.1:8000/debts?user_id=${TEMP_USER_ID}`,
-    {
-      cache: "no-store",
-    },
-  );
+  let response = null;
+  let debts = [];
 
-  const debts = await response.json();
+  try {
+    response = await fetch(
+      `http://127.0.0.1:8000/debts?user_id=${TEMP_USER_ID}`,
+      {
+        cache: "no-store",
+      },
+    );
+  } catch (e) {
+    // TODO: log the error
+
+    throw new Error("Failed to fetch debts", { cause: e });
+  }
+
+  try {
+    debts = await response.json();
+  } catch (e) {
+    // TODO: log the error
+
+    throw new Error("Failed to deserialise debts", { cause: e });
+  }
 
   return debts.map((debt: any) => ({
     id: debt.debt_id,
