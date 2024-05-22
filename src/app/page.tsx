@@ -1,6 +1,6 @@
 import { Debt } from "./components/Debt";
 
-interface DebtProps {
+interface DebtResponse {
   id: string;
   type: "borrowed" | "lent";
   date: string;
@@ -10,7 +10,7 @@ interface DebtProps {
   status: "PAID" | "UNPAID";
 }
 
-async function fetchDebts(): Promise<DebtProps[]> {
+async function fetchDebts(): Promise<DebtResponse[]> {
   const TEMP_USER_ID = "35652167-1d42-440c-ac77-441282535f82";
 
   let response = null;
