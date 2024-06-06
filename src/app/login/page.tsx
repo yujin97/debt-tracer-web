@@ -1,29 +1,16 @@
 "use client";
 
-export default function Login() {
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
+import React from "react";
+import { authenticate } from "./actions/authenticate";
+import { useFormState, useFormStatus } from "react-dom";
 
-    try {
-      await fetch("http://127.0.0.1:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: event.target.username.value,
-          password: event.target.password.value,
-        }),
-      });
-    } catch (e) {
-      // TODO: display error messages
-    }
-  }
+export default function Login() {
+  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
   return (
     <main className="flex min-h-screen flex-col p-12">
       <div className="py-4">Login Page</div>
-      <form className="flex flex-col" onSubmit={handleSubmit}>
+      <form className="flex flex-col" action={dispatch}>
         <input
           className="my-2 text-black"
           type="text"
@@ -36,8 +23,25 @@ export default function Login() {
           name="password"
           placeholder="password"
         />
-        <button type="submit">Login</button>
+        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+        <LoginButton />
       </form>
     </main>
+  );
+}
+
+function LoginButton() {
+  const { pending } = useFormStatus();
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (pending) {
+      event.preventDefault();
+    }
+  };
+
+  return (
+    <button aria-disabled={pending} type="submit" onClick={handleClick}>
+      Login
+    </button>
   );
 }
