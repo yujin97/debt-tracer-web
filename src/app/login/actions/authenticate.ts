@@ -19,7 +19,7 @@ export async function authenticate(
       }),
     });
 
-    // TODO: propagate cookies
+    // propagate cookies
     const cookieStore = cookies();
 
     response.headers.getSetCookie().forEach((setCookie) => {
