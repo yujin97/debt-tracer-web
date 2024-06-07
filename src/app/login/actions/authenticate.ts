@@ -1,5 +1,8 @@
 "use server";
 
+import { cookies } from "next/headers";
+import { parseSetCookie } from "@/app/utils/parseSetCookie";
+
 export async function authenticate(
   _previousState: unknown,
   formData: FormData,
@@ -16,7 +19,13 @@ export async function authenticate(
       }),
     });
 
-    // TODO: propogate cookies
+    // TODO: propagate cookies
+    const cookieStore = cookies();
+
+    response.headers.getSetCookie().forEach((setCookie) => {
+      const parsedSetCookie = parseSetCookie(setCookie);
+      cookieStore.set(parsedSetCookie);
+    });
 
     if (!response.ok) {
       return "Failed to authenticate user";
