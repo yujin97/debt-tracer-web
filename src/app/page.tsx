@@ -1,4 +1,6 @@
+import { cookies } from "next/headers";
 import { Debt } from "./components/Debt";
+import { parseRequestCookie } from "@/app/utils/parseRequestCookie";
 
 interface DebtResponse {
   id: string;
@@ -11,18 +13,22 @@ interface DebtResponse {
 }
 
 async function fetchDebts(): Promise<DebtResponse[]> {
-  const TEMP_USER_ID = "35652167-1d42-440c-ac77-441282535f82";
-
   let response = null;
   let debts = [];
 
+  const cookieStore = cookies();
+  const requestCookieHeader = cookieStore
+    .getAll()
+    .map(parseRequestCookie)
+    .join("; ");
+
   try {
-    response = await fetch(
-      `http://127.0.0.1:8000/debts?user_id=${TEMP_USER_ID}`,
-      {
-        cache: "no-store",
+    response = await fetch(`http://127.0.0.1:8000/debts`, {
+      cache: "no-store",
+      headers: {
+        Cookie: requestCookieHeader,
       },
-    );
+    });
   } catch (e) {
     // TODO: log the error
 
