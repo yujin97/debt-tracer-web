@@ -1,6 +1,8 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 import { parseSetCookie } from "@/app/utils/parseSetCookie";
 import { parseRequestCookie } from "@/app/utils/parseRequestCookie";
 
@@ -42,5 +44,5 @@ export async function authenticate(
     return "Failed to authenticate user";
   }
 
-  return undefined;
+  redirect("/");
 }

@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { Debt } from "./components/Debt";
 import { parseRequestCookie } from "@/app/utils/parseRequestCookie";
+import { redirect } from "next/navigation";
 
 interface DebtResponse {
   id: string;
@@ -12,7 +13,7 @@ interface DebtResponse {
   status: "PAID" | "UNPAID";
 }
 
-async function fetchDebts(): Promise<DebtResponse[]> {
+async function fetchDebts(): Promise<DebtResponse[] | null> {
   let response = null;
   let debts = [];
 
@@ -29,6 +30,10 @@ async function fetchDebts(): Promise<DebtResponse[]> {
         Cookie: requestCookieHeader,
       },
     });
+
+    if (!response.ok && response.status === 401) {
+      return null;
+    }
   } catch (e) {
     // TODO: log the error
 
@@ -56,6 +61,10 @@ async function fetchDebts(): Promise<DebtResponse[]> {
 
 export default async function Home() {
   const debts = await fetchDebts();
+
+  if (debts === null) {
+    redirect("/login");
+  }
 
   return (
     <main className="flex min-h-screen flex-col p-12">
