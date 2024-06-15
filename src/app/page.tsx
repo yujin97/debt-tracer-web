@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
-import { Debt } from "./components/Debt";
-import { parseRequestCookie } from "@/app/utils/parseRequestCookie";
 import { redirect } from "next/navigation";
+import { Debt } from "./components/Debt";
+import { getRequestCookieHeader } from "@/app/utils/getRequestCookieHeader";
+import { fetchUserInfo } from "@/app/utils/fetchUserInfo";
 
 interface DebtResponse {
   id: string;
@@ -16,12 +16,20 @@ interface DebtResponse {
 async function fetchDebts(): Promise<DebtResponse[] | null> {
   let response = null;
   let debts = [];
+  let userInfo = null;
 
-  const cookieStore = cookies();
-  const requestCookieHeader = cookieStore
-    .getAll()
-    .map(parseRequestCookie)
-    .join("; ");
+  const requestCookieHeader = getRequestCookieHeader();
+
+  try {
+    userInfo = await fetchUserInfo();
+  } catch (e) {
+    // temporarily re-throw
+    throw e;
+  }
+
+  if (userInfo === null) {
+    redirect("/login");
+  }
 
   try {
     response = await fetch(`http://127.0.0.1:8000/debts`, {
@@ -48,15 +56,20 @@ async function fetchDebts(): Promise<DebtResponse[] | null> {
     throw new Error("Failed to deserialise debts", { cause: e });
   }
 
-  return debts.map((debt: any) => ({
-    id: debt.debt_id,
-    type: "borrowed",
-    date: debt.created_at,
-    amount: debt.amount,
-    currency: debt.currency,
-    subject: debt.creditor_name,
-    status: "PAID",
-  }));
+  return debts.map((debt: any) => {
+    const type = debt.creditor_id === userInfo.userId ? "lent" : "borrowed";
+    const subject = type === "borrowed" ? debt.creditor_name : debt.debtor_name;
+
+    return {
+      id: debt.debt_id,
+      type,
+      date: debt.created_at,
+      amount: debt.amount,
+      currency: debt.currency,
+      subject,
+      status: "PAID",
+    };
+  });
 }
 
 export default async function Home() {
