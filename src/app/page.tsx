@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { NavigationLayout } from "@/app/layouts/NavigationLayout";
 import { Debt } from "./components/Debt";
 import { getRequestCookieHeader } from "@/app/utils/getRequestCookieHeader";
 import { fetchUserInfo } from "@/app/utils/fetchUserInfo";
@@ -80,23 +81,25 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col p-12">
-      <div>
-        <h1>Debt Tracer</h1>
-      </div>
-      <div className="flex flex-col p-4">
-        {debts.map((debt) => (
-          <Debt
-            key={debt.id}
-            type={debt.type}
-            date={debt.date}
-            amount={debt.amount}
-            currency={debt.currency}
-            subject={debt.subject}
-            status={debt.status}
-          />
-        ))}
-      </div>
-    </main>
+    <NavigationLayout>
+      <main className="flex flex-1 flex-col p-8">
+        <div>
+          <h1>Debt Tracer</h1>
+        </div>
+        <div className="flex flex-col p-4">
+          {debts.map((debt) => (
+            <Debt
+              key={debt.id}
+              type={debt.type}
+              date={debt.date}
+              amount={debt.amount}
+              currency={debt.currency}
+              subject={debt.subject}
+              status={debt.status}
+            />
+          ))}
+        </div>
+      </main>
+    </NavigationLayout>
   );
 }
