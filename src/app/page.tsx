@@ -82,11 +82,11 @@ export default async function Home() {
 
   return (
     <NavigationLayout>
-      <main className="flex flex-1 flex-col p-8">
+      <main className="flex flex-1 flex-col p-4">
         <div>
-          <h1>Debt Tracer</h1>
+          <h1>Debt List</h1>
         </div>
-        <div className="flex flex-col p-4">
+        <div className="flex flex-col gap-2 p-2">
           {debts.map((debt) => (
             <Debt
               key={debt.id}
