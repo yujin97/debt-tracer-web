@@ -86,7 +86,7 @@ export default async function Home() {
         <div>
           <h1>Debt List</h1>
         </div>
-        <div className="flex flex-col gap-2 p-2">
+        <div className="flex flex-col gap-2 py-2">
           {debts.map((debt) => (
             <Debt
               key={debt.id}
