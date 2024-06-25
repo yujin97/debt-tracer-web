@@ -1,6 +1,6 @@
 import { getRequestCookieHeader } from "@/app/utils/getRequestCookieHeader";
 
-interface UserInfo {
+export interface UserInfo {
   userId: string;
   username: string;
 }

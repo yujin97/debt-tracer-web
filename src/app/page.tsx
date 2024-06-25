@@ -1,36 +1,26 @@
 import { redirect } from "next/navigation";
 import { NavigationLayout } from "@/app/layouts/NavigationLayout";
-import { Debt } from "./components/Debt";
+import { Debt, Props as DebtProps } from "./components/Debt";
 import { getRequestCookieHeader } from "@/app/utils/getRequestCookieHeader";
 import { fetchUserInfo } from "@/app/utils/fetchUserInfo";
 
 interface DebtResponse {
   id: string;
-  type: "borrowed" | "lent";
-  date: string;
   amount: number;
   currency: string;
-  subject: string;
+  creditorName: string;
+  debtorName: string;
+  creditorId: string;
+  debtorId: string;
   status: "PAID" | "UNPAID";
+  date: string;
 }
 
 async function fetchDebts(): Promise<DebtResponse[] | null> {
   let response = null;
   let debts = [];
-  let userInfo = null;
 
   const requestCookieHeader = getRequestCookieHeader();
-
-  try {
-    userInfo = await fetchUserInfo();
-  } catch (e) {
-    // temporarily re-throw
-    throw e;
-  }
-
-  if (userInfo === null) {
-    redirect("/login");
-  }
 
   try {
     response = await fetch(`http://127.0.0.1:8000/debts`, {
@@ -58,33 +48,60 @@ async function fetchDebts(): Promise<DebtResponse[] | null> {
   }
 
   return debts.map((debt: any) => {
-    const type = debt.creditor_id === userInfo.userId ? "lent" : "borrowed";
-    const subject = type === "borrowed" ? debt.creditor_name : debt.debtor_name;
-
     return {
       id: debt.debt_id,
-      type,
       date: debt.created_at,
       amount: debt.amount,
       currency: debt.currency,
-      subject,
+      creditorName: debt.creditor_name,
+      debtorName: debt.debtor_name,
+      creditorId: debt.creditor_id,
+      debtorId: debt.debtor_id,
       status: "PAID",
     };
   });
 }
 
-export default async function Home() {
-  const debts = await fetchDebts();
+function mapDebtToProps(
+  debt: DebtResponse,
+  userId: string,
+): DebtProps & { id: string } {
+  const type = debt.creditorId === userId ? "lent" : "borrowed";
+  const subject = type === "borrowed" ? debt.creditorName : debt.debtorName;
 
-  if (debts === null) {
+  return {
+    id: debt.id,
+    type,
+    date: debt.date.slice(0, 16),
+    amount: debt.amount,
+    currency: debt.currency,
+    subject: subject,
+    status: debt.status,
+  };
+}
+
+export default async function Home() {
+  const userInfoPromise = fetchUserInfo();
+  const debtsPromise = fetchDebts();
+
+  const [userInfo, debtResponse] = await Promise.all([
+    userInfoPromise,
+    debtsPromise,
+  ]);
+
+  if (userInfo === null || debtResponse === null) {
     redirect("/login");
   }
 
+  const debts = debtResponse.map((debt) =>
+    mapDebtToProps(debt, userInfo.userId),
+  );
+
   return (
-    <NavigationLayout>
+    <NavigationLayout userInfo={userInfo}>
       <main className="flex flex-1 flex-col p-4">
         <div>
-          <h1>Debt List</h1>
+          <h1 className="text-2xl font-semibold">Debt Overview</h1>
         </div>
         <div className="flex flex-col gap-2 py-2">
           {debts.map((debt) => (

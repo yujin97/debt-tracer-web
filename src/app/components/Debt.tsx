@@ -1,4 +1,4 @@
-interface Props {
+export interface Props {
   type: "borrowed" | "lent";
   date: string;
   amount: number;
