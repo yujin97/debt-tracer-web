@@ -12,7 +12,7 @@ interface DebtResponse {
   debtorName: string;
   creditorId: string;
   debtorId: string;
-  status: "PAID" | "UNPAID";
+  status: "paid" | "unpaid" | "pending";
   date: string;
 }
 
@@ -41,6 +41,7 @@ async function fetchDebts(): Promise<DebtResponse[] | null> {
 
   try {
     debts = await response.json();
+    // TODO: add zod validation
   } catch (e) {
     // TODO: log the error
 
@@ -57,7 +58,7 @@ async function fetchDebts(): Promise<DebtResponse[] | null> {
       debtorName: debt.debtor_name,
       creditorId: debt.creditor_id,
       debtorId: debt.debtor_id,
-      status: "PAID",
+      status: debt.status,
     };
   });
 }
@@ -104,17 +105,19 @@ export default async function Home() {
           <h1 className="text-2xl font-semibold">Debt Overview</h1>
         </div>
         <div className="flex flex-col gap-2 py-2">
-          {debts.map((debt) => (
-            <Debt
-              key={debt.id}
-              type={debt.type}
-              date={debt.date}
-              amount={debt.amount}
-              currency={debt.currency}
-              subject={debt.subject}
-              status={debt.status}
-            />
-          ))}
+          {debts.map(
+            ({ id, type, date, amount, currency, subject, status }) => (
+              <Debt
+                key={id}
+                type={type}
+                date={date}
+                amount={amount}
+                currency={currency}
+                subject={subject}
+                status={status}
+              />
+            ),
+          )}
         </div>
       </main>
     </NavigationLayout>

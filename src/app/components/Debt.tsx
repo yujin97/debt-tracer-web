@@ -4,12 +4,12 @@ export interface Props {
   amount: number;
   currency: string;
   subject: string;
-  status: "PAID" | "UNPAID";
+  status: "paid" | "unpaid" | "pending";
 }
 
 export function Debt({ type, date, amount, currency, subject, status }: Props) {
   const typeLabel = type === "borrowed" ? "Borrowed" : "Lent";
-  const statusLabel = status === "PAID" ? "PAID" : "UNPAID";
+  const statusLabel = status.toUpperCase();
   const subjectLabel = type === "borrowed" ? "Creditor" : "Debtor";
 
   return (
