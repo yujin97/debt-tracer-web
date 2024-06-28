@@ -70,10 +70,12 @@ function mapDebtToProps(
   const type = debt.creditorId === userId ? "lent" : "borrowed";
   const subject = type === "borrowed" ? debt.creditorName : debt.debtorName;
 
+  const date = new Date(debt.date).toLocaleDateString();
+
   return {
     id: debt.id,
     type,
-    date: debt.date.slice(0, 16),
+    date,
     amount: debt.amount,
     currency: debt.currency,
     subject: subject,
