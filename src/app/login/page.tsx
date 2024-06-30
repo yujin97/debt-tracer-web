@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { authenticate } from "./actions/authenticate";
 import { useFormState, useFormStatus } from "react-dom";
+import { authenticate } from "./actions/authenticate";
 
 export default function Login() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { parseSetCookie } from "@/app/utils/parseSetCookie";
 import { parseRequestCookie } from "@/app/utils/parseRequestCookie";
 
+// eslint-disable-next-line consistent-return
 export async function authenticate(
   _previousState: unknown,
   formData: FormData,

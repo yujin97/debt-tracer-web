@@ -11,7 +11,17 @@
   },
   "rules": {
     "@typescript-eslint/quotes": "off",
+    "@typescript-eslint/dot-notation": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      {
+        "variables": false,
+        "functions": false
+      }
+    ],
+    "@typescript-eslint/no-shadow": "off",
     "react/jsx-one-expression-per-line": "off",
+    "react/require-default-props": "off",
     "import/prefer-default-export": "off",
     "no-use-before-define": [
       "error",
@@ -19,6 +29,7 @@
         "variables": false,
         "functions": false
       }
-    ]
+    ],
+    "one-var": "off"
   }
 }

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { NavigationLayout } from "@/app/layouts/NavigationLayout";
-import { Debt, Props as DebtProps } from "./components/Debt";
+import { Debt, Props as DebtProps } from "@/app/components/Debt";
 import { getRequestCookieHeader } from "@/app/utils/getRequestCookieHeader";
 import { fetchUserInfo } from "@/app/utils/fetchUserInfo";
 
@@ -48,19 +48,17 @@ async function fetchDebts(): Promise<DebtResponse[] | null> {
     throw new Error("Failed to deserialise debts", { cause: e });
   }
 
-  return debts.map((debt: any) => {
-    return {
-      id: debt.debt_id,
-      date: debt.created_at,
-      amount: debt.amount,
-      currency: debt.currency,
-      creditorName: debt.creditor_name,
-      debtorName: debt.debtor_name,
-      creditorId: debt.creditor_id,
-      debtorId: debt.debtor_id,
-      status: debt.status,
-    };
-  });
+  return debts.map((debt: any) => ({
+    id: debt.debt_id,
+    date: debt.created_at,
+    amount: debt.amount,
+    currency: debt.currency,
+    creditorName: debt.creditor_name,
+    debtorName: debt.debtor_name,
+    creditorId: debt.creditor_id,
+    debtorId: debt.debtor_id,
+    status: debt.status,
+  }));
 }
 
 function mapDebtToProps(
@@ -78,7 +76,7 @@ function mapDebtToProps(
     date,
     amount: debt.amount,
     currency: debt.currency,
-    subject: subject,
+    subject,
     status: debt.status,
   };
 }
