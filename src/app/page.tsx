@@ -100,11 +100,11 @@ export default async function Home() {
 
   return (
     <NavigationLayout userInfo={userInfo}>
-      <main className="flex flex-1 flex-col p-4">
+      <main className="flex flex-1 flex-col p-4 md:p-6">
         <div>
           <h1 className="text-2xl font-semibold">Debt Overview</h1>
         </div>
-        <div className="flex flex-col gap-2 py-2">
+        <div className="my-2 flex flex-col gap-2 md:my-4 md:flex-row md:flex-wrap md:justify-center md:gap-4">
           {debts.map(
             ({ id, type, date, amount, currency, subject, status }) => (
               <Debt
