@@ -9,9 +9,9 @@ export function BorrowIcon({ className = "" }: { className?: string }) {
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className="h-5 w-5 text-red-500"
       >
         <path d="M7 7h10v10" />
