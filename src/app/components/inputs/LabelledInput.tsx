@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 interface Props {
   label: string;
   id: string;
@@ -6,6 +10,8 @@ interface Props {
 }
 
 export function LabelledInput({ label, id, type, name }: Props) {
+  const [isBlank, setIsBlank] = useState(true);
+
   return (
     <div className="relative">
       <input
@@ -13,9 +19,11 @@ export function LabelledInput({ label, id, type, name }: Props) {
         type={type}
         name={name}
         id={id}
+        onChange={(event) => setIsBlank(event.target.value === "")}
+        data-is-blank={isBlank}
       />
       <label
-        className="absolute left-4 right-4 top-4 text-white/70 peer-focus:top-2 peer-focus:text-xs"
+        className="[] absolute left-4 right-4 top-4 text-white/70 peer-focus:top-2 peer-focus:text-xs peer-data-[is-blank=false]:top-2 peer-data-[is-blank=false]:text-xs"
         htmlFor="username"
       >
         {label}

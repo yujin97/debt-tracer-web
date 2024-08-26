@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { authenticate } from "./actions/authenticate";
 import { LabelledInput } from "../components/inputs/LabelledInput";
