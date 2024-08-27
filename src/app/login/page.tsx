@@ -10,12 +10,12 @@ export default function Login() {
   return (
     <main className="flex min-h-screen flex-col">
       <div className="fixed -z-0 h-screen min-h-screen w-full bg-gray-500" />
-      <header className="z-10 mx-auto my-0 min-w-[66%] max-w-screen-lg p-6 text-3xl">
+      <header className="z-10 min-w-[66%] max-w-screen-lg p-6 text-xl lg:mx-auto lg:my-0 lg:text-3xl">
         Debt Tracer
       </header>
-      <div className="relative z-10 mx-auto my-0 min-h-96 w-full max-w-md bg-black/70 px-16 py-12">
+      <div className="relative z-10 mx-auto my-0 min-h-96 w-full grow bg-black/70 px-16 py-12 sm:max-w-md sm:grow-0">
         <h1 className="mb-7 text-3xl">Sign In</h1>
-        <form className="flex flex-col gap-4" action={dispatch}>
+        <form className="flex min-w-48 flex-col gap-4" action={dispatch}>
           <LabelledInput
             label="Username"
             id="username"
