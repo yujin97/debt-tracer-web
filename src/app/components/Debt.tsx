@@ -16,7 +16,7 @@ export function Debt({ type, date, amount, currency, subject, status }: Props) {
   const statusLabel = status.toUpperCase();
 
   return (
-    <div className="flex flex-col rounded-md border-zinc-300 bg-gray-950 p-2 shadow-inner shadow-white md:basis-2/5">
+    <div className="flex flex-col rounded-md border-zinc-300 bg-gray-950 p-2 shadow-inner shadow-white md:basis-1/2">
       <div className="flex justify-between">
         <div className="flex items-center gap-2 p-1 pb-2">
           {type === "borrowed" ? (
