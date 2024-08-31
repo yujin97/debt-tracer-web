@@ -100,7 +100,7 @@ export default async function Home() {
 
   return (
     <NavigationLayout userInfo={userInfo}>
-      <main className="flex min-w-96 flex-1 flex-col p-4 md:p-6">
+      <main className="mx-auto flex min-w-96 max-w-screen-xl flex-1 flex-col p-4 md:p-6">
         <div>
           <h1 className="whitespace-nowrap text-2xl font-semibold">
             Debt Overview
